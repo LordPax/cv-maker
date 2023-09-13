@@ -64,6 +64,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Pull image in background
+        run: docker pull ghcr.io/puppeteer/puppeteer:latest &
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -109,6 +112,11 @@ jobs:
           docker run -i --init --cap-add=SYS_ADMIN -v ./gen:/home/pptruser/gen --network host ghcr.io/puppeteer/puppeteer:latest node -e "$(cat snapshot.js)" http://localhost:4173 ./gen
           mv gen/* static/
           sed -i 's%http://localhost:4173%https://cv-maker-pearl.vercel.app%g' static/*.pdf
+
+      - name: Git config
+        run: |
+          git config user.name "CI Bot"
+          git config user.email "${GITHUB_ACTOR}@user.noreplay.github.com"
 
       - name: Push to git
         run: |
