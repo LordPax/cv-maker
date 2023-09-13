@@ -61,7 +61,7 @@ jobs:
           curl -I http://localhost:4173
 
   snapshot:
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout
@@ -112,7 +112,7 @@ jobs:
       - name: Push to git
         run: |
           git add static
-          git commit -m "update snapshot ${{ github.sha}}"
+          git commit -m "update snapshot ${{ github.sha }}"
           git push
 
   deploy:
